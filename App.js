@@ -107,9 +107,6 @@ const styles = StyleSheet.create({
     width: 100,
     alignItems: 'center',
   },
-  buttonPressed: {
-    backgroundColor: 'blue',
-  },
   buttonText: {
     color: '#fff',
     fontSize: 25,
