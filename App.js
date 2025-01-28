@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import {Alert, StyleSheet, Text, TextInput, Pressable, View, KeyboardAvoidingView, Platform} from 'react-native';
+import {Alert, StyleSheet, Text, TextInput, Pressable, View, KeyboardAvoidingView, Platform, FlatList} from 'react-native';
 
 export default function App() {
   const [numero1, setNumero1] = useState('');
   const [numero2, setNumero2] = useState('');
   const [tulos, setTulos] = useState(null);
+  const [history, setHistory] = useState([]);
   const laskeSumma = () => {
     if (!numero1 || !numero2) {
       Alert.alert('Syötä molemmat numerot!');
       return;
     }
     const summa = parseFloat(numero1.replace(',', '.')) + parseFloat(numero2.replace(',', '.'));
+    const resultString = `${numero1} + ${numero2} = ${summa.toString().replace('.', ',')}`;
     setTulos(summa.toString().replace('.', ','));
+    setHistory([...history, resultString]);
+    setNumero1('');
+    setNumero2('');
   };
   const laskeErotus = () => {
     if (!numero1 || !numero2) {
@@ -19,10 +24,13 @@ export default function App() {
       return;
     }
     const erotus = parseFloat(numero1.replace(',', '.')) - parseFloat(numero2.replace(',', '.'));
+    const resultString = `${numero1} - ${numero2} = ${erotus.toString().replace('.', ',')}`;
     setTulos(erotus.toString().replace('.', ','));
-    
+    setHistory([...history, resultString]);
+    setNumero1('');
+    setNumero2('');
   };
-
+  const renderHistoryItem = ({ item }) => <Text style={styles.historyItem}>{item}</Text>;
   return (
     <KeyboardAvoidingView 
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -61,6 +69,12 @@ export default function App() {
           <Text style={styles.buttonText}>-</Text>
         </Pressable>
       </View>
+      <Text style={styles.historyTitle}>History</Text>
+      <FlatList 
+        data={history} 
+        renderItem={({ item }) => <Text style={styles.historyItem}>{item}</Text>} 
+        style={styles.historyList}
+      />
     </KeyboardAvoidingView>
   );
 }
@@ -70,15 +84,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#6eb5aa'
+    backgroundColor: '#6eb5aa',
+    paddingTop: 100,
   },
   appName: {
-    fontSize: 50,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 20,
   },
   tulos: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
     marginBottom: 20,
@@ -101,15 +116,31 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#0d46b8',
     padding: 10,
     borderRadius: 5,
-    width: 100,
+    width: 70,
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
     fontSize: 25,
     fontWeight: 'bold',
+  },
+  historyTitle: {
+    marginTop: 30,
+    fontSize: 20,
+  },
+  historyList: {
+    marginTop: 10,
+    width: '80%',
+  },
+  historyItem: {
+    fontSize: 18,
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    textAlign:'center',
+    
   },
 });
