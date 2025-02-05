@@ -54,19 +54,13 @@ const Calculator = ({ navigation }) => {
       />
       <View style={styles.buttonContainer}>
         <Pressable
-          style={({ pressed }) => [
-            styles.button,
-            pressed
-          ]}
+          style={styles.button}
           onPress={laskeSumma}
         >
           <Text style={styles.buttonText}>+</Text>
         </Pressable>
         <Pressable
-          style={({ pressed }) => [
-            styles.button,
-            pressed 
-          ]}
+          style={styles.button}
           onPress={laskeErotus}
         >
           <Text style={styles.buttonText}>-</Text>
